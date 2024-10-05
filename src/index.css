@@ -11,3 +11,32 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.css-13xfq8m-MuiTabPanel-root {
+  padding: 0px 60px !important
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.myButton {
+  padding: '10px';
+  width: '15ch';
+  background-color: '#9515FF';
+  color: 'white';
+  border: 'none';
+}
+
+.mainColor {
+  color: #9515FF
+}
+
+.table {
+  padding: 24px 0px
+}
+
+@import "leaflet/dist/leaflet.css";
