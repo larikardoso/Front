@@ -17,6 +17,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { AppContext } from './context';
 import { BACKEND_URL } from './constants';
+import LoadingIndicator from './LoadingComponent';
 
 export const TelaConsulta = () => {
     const { busData, setBusData } = useContext(AppContext);
@@ -24,6 +25,8 @@ export const TelaConsulta = () => {
     const { latPonto, setLatPonto } = useContext(AppContext);
     const { longPonto, setLongPonto } = useContext(AppContext);
     const { linha, setLinha } = useContext(AppContext);
+    const { setLoading } = useContext(AppContext);
+
 
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
         [`&.${tableCellClasses.head}`]: {
@@ -47,6 +50,7 @@ export const TelaConsulta = () => {
 
     const getStop = async (e) => {
         e.preventDefault();
+        setLoading(true);
         const userData = {
             ponto: ponto,
             linha: linha,
@@ -55,7 +59,6 @@ export const TelaConsulta = () => {
         try {
             const response = await axios.post(BACKEND_URL + 'stops', userData);
             const infoPonto = response.data[0]
-            console.log(infoPonto)
             setLatPonto(infoPonto.stop_lat)
             setLongPonto(infoPonto.stop_lon)
             getBusData(infoPonto);
@@ -82,7 +85,6 @@ export const TelaConsulta = () => {
             );
             // limita em 25 onibus 
             onibusUnico = onibusUnico.slice(0, 25)
-            console.log(onibusUnico);
 
             onibusUnico.forEach((element, index) => {
                 const lat = element.latitude.replace(',', '.')
@@ -95,6 +97,11 @@ export const TelaConsulta = () => {
             getDistances(destinations, origins, onibusUnico)
         } catch (error) {
             console.error('Erro ao buscar dados:', error);
+
+        } finally {
+            setLoading(false); // Finaliza o loading
+            setPonto('')
+            setLinha('')
         }
     };
 
@@ -104,7 +111,6 @@ export const TelaConsulta = () => {
                 "destinations": destinations,
                 "origins": origins
             });
-            console.log(response)
 
             const lista = [];
 
@@ -112,7 +118,6 @@ export const TelaConsulta = () => {
                 lista.push({ key: index, linha: dadosFiltrados[index].linha, carro: dadosFiltrados[index].ordem, velocidade: dadosFiltrados[index].velocidade, tempo: element.elements[0].duration.text, lat: dadosFiltrados[index].latitude.replace(',', '.'), long: dadosFiltrados[index].longitude.replace(',', '.') })
             })
 
-            console.log(lista)
             setBusData(lista)
         } catch (error) {
             console.error('Erro ao buscar dados:', error);
@@ -155,6 +160,8 @@ export const TelaConsulta = () => {
                     <Button variant="contained" type="submit" style={{ padding: '10px', width: '15ch', backgroundColor: '#9515FF', color: 'white', border: 'none' }}>Enviar</Button>
                 </Stack>
             </form>
+
+            <LoadingIndicator />
 
             {/* Tabela com dados dos ônibus */}
             {busData.length > 0 ? <div >

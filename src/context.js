@@ -17,9 +17,10 @@ export const AppProvider = ({ children }) => {
     const [latPonto, setLatPonto] = useState('');
     const [longPonto, setLongPonto] = useState('');
     const [linha, setLinha] = useState('');
+    const [loading, setLoading] = useState(false);
 
     return (
-        <AppContext.Provider value={{ email, setEmail, linha_BD, setLinhaBD, ponto_BD, setPontoBD, janela1, setJanela1, janela2, setJanela2, busData, setBusData, selectedBus, setSelectedBus, ponto, setPonto, latPonto, setLatPonto, longPonto, setLongPonto, linha, setLinha, }}>
+        <AppContext.Provider value={{ email, setEmail, linha_BD, setLinhaBD, ponto_BD, setPontoBD, janela1, setJanela1, janela2, setJanela2, busData, setBusData, selectedBus, setSelectedBus, ponto, setPonto, latPonto, setLatPonto, longPonto, setLongPonto, linha, setLinha, loading, setLoading }}>
             {children}
         </AppContext.Provider>
     );
