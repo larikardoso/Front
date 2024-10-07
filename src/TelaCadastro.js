@@ -22,7 +22,6 @@ export const TelaCadastro = () => {
     const { ponto_BD, setPontoBD } = useContext(AppContext);
     const { janela1, setJanela1 } = useContext(AppContext);
     const { janela2, setJanela2 } = useContext(AppContext);
-    const { busData, setBusData } = useContext(AppContext);
     const [open, setOpen] = React.useState(false);
     const { setLoading } = useContext(AppContext);
 
@@ -68,11 +67,8 @@ export const TelaCadastro = () => {
             janela2: dataFormatada2,
         };
 
-
         try {
-            const response = await axios.post(BACKEND_URL + 'clientes', userData);
-
-            setBusData(response.data);
+            await axios.post(BACKEND_URL + 'clientes', userData);
             setOpen(true);
         } catch (error) {
             console.error('Erro ao buscar dados:', error);
